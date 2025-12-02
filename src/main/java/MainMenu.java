@@ -1,11 +1,13 @@
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Scanner;
 
 public class MainMenu {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
+
         System.out.println("Welcome to the main menu");
         System.out.println("Options:");
         Scanner input = new Scanner(System.in);
+        String encryptedText;
         boolean isRunning = true;
 
         while (isRunning) {
@@ -20,16 +22,37 @@ public class MainMenu {
         switch (menuChoice)
         {
             case 1:
-                System.out.println("1");
                 System.out.println("Encrypt File Name");
                 String fileName = input.nextLine();
-                System.out.println(EncyrptionUtil.findTextFile(fileName));
-                    isRunning = false;
+
+                String filePath = EncyrptionUtil.findTextFile(fileName);
+                File encryptionFile = new File(EncyrptionUtil.findTextFile(fileName));
+
+                String preCipherText = "";
+
+                    preCipherText+=encryptionFile;
+
+                System.out.println(preCipherText);
+
+
+                encryptedText = EncyrptionUtil.encrypt(preCipherText);
+
+                System.out.println("enter file target");
+                String fileTarget = input.nextLine();
+
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fileTarget));
+                writer.write(encryptedText);
+                writer.close();//writing to file code adapted from https://www.baeldung.com/java-write-to-file, particularly BufferedWriter object & import.
+
+                System.out.println(encryptedText);
                     break;
 
                 case 2:
                     System.out.println("2");
-                    isRunning = false;
+                    System.out.println("Enter text to decrypt");
+                    String dFileName = input.nextLine();
+                    String dFilePath = EncyrptionUtil.findTextFile(dFileName);
+                    System.out.println(EncyrptionUtil.decrypt(dFilePath));
                     break;
 
             case 0:
