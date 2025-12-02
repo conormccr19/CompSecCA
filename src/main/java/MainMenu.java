@@ -1,7 +1,8 @@
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class MainMenu {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Welcome to the main menu");
         System.out.println("Options:");
         Scanner input = new Scanner(System.in);
@@ -20,6 +21,9 @@ public class MainMenu {
         {
             case 1:
                 System.out.println("1");
+                System.out.println("Encrypt File Name");
+                String fileName = input.nextLine();
+                System.out.println(EncyrptionUtil.findTextFile(fileName));
                     isRunning = false;
                     break;
 
