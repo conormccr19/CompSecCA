@@ -4,46 +4,51 @@ import java.util.Scanner;
 public class MainMenu {
     public static void main(String[] args) throws IOException {
 
-        System.out.println("Welcome to the main menu");
-        System.out.println("Options:");
+
         Scanner input = new Scanner(System.in);
         String encryptedText;
         boolean isRunning = true;
 
         while (isRunning) {
         String[] menuOptions = {
-                "(0) Exit",
-                "(1) Encrypt File",
-                "(2) Decrypt File"
+                "(0) EXIT",
+                "(1) ENCRYPT FILE",
+                "(2) DECRYPT FILE"
         };
 
-            MainMenuUtil.displayMenu(menuOptions,"Menu");
+            MainMenuUtil.displayMenu(menuOptions);
         int menuChoice = MainMenuUtil.getChoice();
         switch (menuChoice)
         {
             case 1:
-
-                System.out.println("Encrypt File Name");
-                String fileName = input.nextLine();
-
-                String filePath = EncyrptionUtil.findTextFile(fileName);
-                File encryptionFile = new File(EncyrptionUtil.findTextFile(fileName));
-
+                boolean eCorrect =false;
+                String eFilePath="";
                 String preCipherText = "";
+                String eFileTarget = "ciphertext.txt";
+                while(!eCorrect)
+                {
+                    System.out.println("Enter filename to encrypt or 0 to cancel:");
+                    String fileName = input.nextLine();
 
-                    preCipherText+=encryptionFile;
+                    if(fileName.equals("0"))
+                    {
+                        System.out.println("Returning to main menu.");
+                        break;//exit loop
+                    }
+                    eFilePath=EncyrptionUtil.findTextFile(fileName);
 
-                System.out.println(preCipherText);
+                    if(!eFilePath.isEmpty())
+                    {
+                        eCorrect=true;
+                    }
+                }
 
-
+                File encryptionFile = new File(eFilePath);
+                preCipherText=eFilePath;
+                System.out.println("PlainText: "+ preCipherText);
                 encryptedText = EncyrptionUtil.encrypt(preCipherText);
 
-
-                String fileTarget = "ciphertext.txt";
-
-
-
-                BufferedWriter writer = new BufferedWriter(new FileWriter(fileTarget));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(eFileTarget));
                 writer.write(encryptedText);
                 writer.close();//writing to file code adapted from https://www.baeldung.com/java-write-to-file.
 
@@ -53,10 +58,10 @@ public class MainMenu {
                     break;
 
             case 2:
-                boolean correct = false;
+                boolean dCorrect = false;
                 String dFilePath = "";
                 String dFileTarget="plaintext.txt";
-                while (!correct) {
+                while (!dCorrect) {
                     System.out.println("Enter filename to decrypt or 0 to cancel:");
                     String dFileName = input.nextLine();
 
@@ -68,12 +73,12 @@ public class MainMenu {
                     dFilePath = EncyrptionUtil.findTextFile(dFileName);
 
                     if (!dFilePath.isEmpty()) {
-                        correct=true;
+                        dCorrect=true;
                     }
                 }
 
                 // asks for key when file accepted
-                if (correct) {
+                if (dCorrect) {
                     String keyG = MainMenuUtil.handleKeyGuess();
                     if (keyG!=null) {
                         String decryptedText = EncyrptionUtil.decrypt(dFilePath, keyG);
@@ -91,8 +96,7 @@ public class MainMenu {
                 }
                 break;
 
-            case 3:
-                EncyrptionUtil.generateKey();
+
             case 0:
                 System.out.println("Exiting.");
                 isRunning = false;

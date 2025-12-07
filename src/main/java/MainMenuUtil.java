@@ -13,7 +13,7 @@ public class MainMenuUtil {
             try {
                 choice = Integer.parseInt(input);
 
-                if (choice >= 0 && choice < 4) {
+                if (choice >= 0 && choice < 3) {
                     valid = true;
                 } else {
                     System.out.println("Invalid choice, try again.");
@@ -28,9 +28,12 @@ public class MainMenuUtil {
     }
 
 
-    public static void displayMenu(String[] menuOptions,String menuTitle){
-        System.out.println(menuTitle);
-        System.out.println("Choose one");
+    public static void displayMenu(String[] menuOptions){
+        System.out.println("""
+        |========|
+        |  MENU  |
+        |========|
+        """);
         for (String option : menuOptions)
         {
             System.out.println(option);
@@ -57,6 +60,17 @@ public class MainMenuUtil {
             }
         }
         return null;
+    }
+    public static String  dashMenu(String title)
+    {
+        String returnS ="";
+        System.out.println(title);
+        for (int i =0;i<title.length();i++)
+        {
+            returnS+="-";
+        }
+        returnS+="\n";
+        return returnS;
     }
 
 }
