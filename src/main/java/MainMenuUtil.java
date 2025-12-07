@@ -19,7 +19,7 @@ public class MainMenuUtil {
                     System.out.println("Invalid choice, try again.");
                 }
 
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 System.out.println("Invalid input, enter a number.");
             }
         }
@@ -44,10 +44,11 @@ public class MainMenuUtil {
         Scanner  keyboard = new Scanner(System.in);
         boolean isRunning = true;
         int attemptCount=3;
+        System.out.println("You may only attempt to enter decryption key 3 times before you get kicked out.");
         while(isRunning && attemptCount>0) {
             System.out.println("Enter key");
             String key = keyboard.nextLine();
-            if (!key.equals( EncyrptionUtil.getKey())) {
+            if (!key.equals(EncyrptionUtil.getKey())) {
                 attemptCount--;
                 System.out.println("You have " + attemptCount + " attempts left.");
                 if(attemptCount == 0) {
@@ -59,6 +60,6 @@ public class MainMenuUtil {
                return key;
             }
         }
-        return null;
+        return null; //backup , prevents crashes
     }
 }

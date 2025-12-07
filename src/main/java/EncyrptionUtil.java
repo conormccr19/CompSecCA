@@ -6,14 +6,13 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Random;
 import java.util.Scanner;
 
-//encrypt logic adapted from https://www.geeksforgeeks.org/java/what-is-java-aes-encryption-and-decryption/ taken from MOODLE NOTES LINk
+//encrypt and decrypt logic adapted from https://www.geeksforgeeks.org/java/what-is-java-aes-encryption-and-decryption/ taken from MOODLE NOTES LINk
 
 public class EncyrptionUtil {
     private static  String SecretKey = generateKey();
@@ -28,15 +27,10 @@ public class EncyrptionUtil {
             IvParameterSpec ivSpec = new IvParameterSpec(iv);
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-
         KeySpec spec = new PBEKeySpec(SecretKey.toCharArray(),SALT.getBytes(),65536, 256);
-
         SecretKey tmp = factory.generateSecret(spec);
-
         SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
-
         Cipher cipher =Cipher.getInstance("AES/CBC/PKCS5Padding");
-
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
 
         return Base64.getEncoder().encodeToString(cipher.doFinal(stringToEncrypt.getBytes(StandardCharsets.UTF_8)));
@@ -79,7 +73,7 @@ public class EncyrptionUtil {
         return(null);
     }
 
-    public static String findTextFile(String filename) throws FileNotFoundException {
+    public static String findTextFileContent(String filename) {
         File file = new File(filename);
 
        try {
@@ -108,10 +102,11 @@ public class EncyrptionUtil {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
 
-        return generatedString; // code adapted from https://www.baeldung.com/java-random-string
+        return generatedString; // code for the generation of the key adapted from https://www.baeldung.com/java-random-string
     }
     public static String getKey()
     {
         return SecretKey;
     }
+
 }
