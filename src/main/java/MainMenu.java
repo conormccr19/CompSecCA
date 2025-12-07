@@ -8,7 +8,6 @@ public class MainMenu {
         System.out.println("Options:");
         Scanner input = new Scanner(System.in);
         String encryptedText;
-        int key;
         boolean isRunning = true;
 
         while (isRunning) {
@@ -38,28 +37,59 @@ public class MainMenu {
 
                 encryptedText = EncyrptionUtil.encrypt(preCipherText);
 
-                System.out.println("enter file target");
+                System.out.println("Enter file name to encrypt text to or 0 to cancel");
                 String fileTarget = input.nextLine();
+
+
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter(fileTarget));
                 writer.write(encryptedText);
-                writer.close();//writing to file code adapted from https://www.baeldung.com/java-write-to-file, particularly BufferedWriter object & import.
+                writer.close();//writing to file code adapted from https://www.baeldung.com/java-write-to-file.
 
                 System.out.println(encryptedText);
                 System.out.println("The Encryption key is " + EncyrptionUtil.getKey());
 
                     break;
 
-                case 2:
-                    System.out.println("2");
-                    System.out.println("Enter text to decrypt");
+            case 2:
+                boolean correct = false;
+                String dFilePath = "";
+                while (!correct) {
+                    System.out.println("Enter filename to decrypt or 0 to cancel:");
                     String dFileName = input.nextLine();
-                    String dFilePath = EncyrptionUtil.findTextFile(dFileName);
-                    System.out.println(EncyrptionUtil.decrypt(dFilePath));
-                    break;
 
+                    if (dFileName.equals("0")) {
+                        System.out.println("Returning to main menu.");
+                        break; // exit loop
+                    }
+
+                    dFilePath = EncyrptionUtil.findTextFile(dFileName);
+
+                    if (!dFilePath.isEmpty()) {
+                        correct=true;
+                    }
+                }
+
+                // asks for key when file accepted
+                if (correct) {
+                    String keyG = MainMenuUtil.handleKeyGuess();
+                    if (keyG!=null) {
+                        String decryptedText = EncyrptionUtil.decrypt(dFilePath, keyG);
+                        if (!decryptedText.isEmpty()) {
+                            System.out.println("Decrypted text:" + decryptedText);
+                        } else {
+                            System.out.println("Decryption failed.");
+                        }
+                    } else {
+                        System.out.println("Failed to provide the correct key. Returning to main menu.");
+                    }
+                }
+                break;
+
+            case 3:
+                EncyrptionUtil.generateKey();
             case 0:
-                System.out.println("0");
+                System.out.println("Exiting.");
                 isRunning = false;
                 break;
 

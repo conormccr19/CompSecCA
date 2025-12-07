@@ -13,7 +13,7 @@ public class MainMenuUtil {
             try {
                 choice = Integer.parseInt(input);
 
-                if (choice >= 0 && choice < 3) {
+                if (choice >= 0 && choice < 4) {
                     valid = true;
                 } else {
                     System.out.println("Invalid choice, try again.");
@@ -35,6 +35,28 @@ public class MainMenuUtil {
         {
             System.out.println(option);
         }
+    }
+    public static String handleKeyGuess ()
+    {
+        Scanner  keyboard = new Scanner(System.in);
+        boolean isRunning = true;
+        int attemptCount=3;
+        while(isRunning && attemptCount>0) {
+            System.out.println("Enter key");
+            String key = keyboard.nextLine();
+            if (!key.equals( EncyrptionUtil.getKey())) {
+                attemptCount--;
+                System.out.println("You have " + attemptCount + " attempts left.");
+                if(attemptCount == 0) {
+                    return null;
+                }
+            }
+            else{
+
+               return key;
+            }
+        }
+        return null;
     }
 
 }

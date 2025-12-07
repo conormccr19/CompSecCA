@@ -6,13 +6,17 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import java.util.Random;
 import java.util.Scanner;
 
+//encrypt logic adapted from https://www.geeksforgeeks.org/java/what-is-java-aes-encryption-and-decryption/ taken from MOODLE NOTES LINk
+
 public class EncyrptionUtil {
-    private static final String SecretKey = "CompSecCa2025";
+    private static  String SecretKey = generateKey();
 
     private static final String SALT = "ConorMcCracken";
 
@@ -40,11 +44,11 @@ public class EncyrptionUtil {
         }
     catch(Exception e)
         {
-            System.out.println("An error has occured in the encryption process: "+ e.toString());
+            System.out.println("An error has occured in the encryption process");
         }
     return(null);
     }
-    public static String decrypt (String stringToDecrypt)
+    public static String decrypt (String stringToDecrypt,String keyInput)
     {
         try
         {
@@ -55,7 +59,7 @@ public class EncyrptionUtil {
 
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 
-            KeySpec spec = new PBEKeySpec(SecretKey.toCharArray(),SALT.getBytes(),65536, 256);
+            KeySpec spec = new PBEKeySpec(keyInput.toCharArray(),SALT.getBytes(),65536, 256);
 
             SecretKey tmp = factory.generateSecret(spec);
 
@@ -70,7 +74,7 @@ public class EncyrptionUtil {
         }
         catch(Exception e)
         {
-            System.out.println("An error has occured in the decryption process: "+ e.toString());
+            System.out.println("An error has occured in the decryption process: ");
         }
         return(null);
     }
@@ -91,7 +95,21 @@ public class EncyrptionUtil {
            return "";
        }
     }
+    public static String generateKey(){
 
+        int leftLimit = 48;
+        int rightLimit = 122;
+        int targetStringLength = 18;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        return generatedString; // code adapted from https://www.baeldung.com/java-random-string
+    }
     public static String getKey()
     {
         return SecretKey;
