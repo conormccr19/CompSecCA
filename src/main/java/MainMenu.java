@@ -22,6 +22,7 @@ public class MainMenu {
         switch (menuChoice)
         {
             case 1:
+
                 System.out.println("Encrypt File Name");
                 String fileName = input.nextLine();
 
@@ -37,8 +38,8 @@ public class MainMenu {
 
                 encryptedText = EncyrptionUtil.encrypt(preCipherText);
 
-                System.out.println("Enter file name to encrypt text to or 0 to cancel");
-                String fileTarget = input.nextLine();
+
+                String fileTarget = "ciphertext.txt";
 
 
 
@@ -54,6 +55,7 @@ public class MainMenu {
             case 2:
                 boolean correct = false;
                 String dFilePath = "";
+                String dFileTarget="plaintext.txt";
                 while (!correct) {
                     System.out.println("Enter filename to decrypt or 0 to cancel:");
                     String dFileName = input.nextLine();
@@ -76,7 +78,10 @@ public class MainMenu {
                     if (keyG!=null) {
                         String decryptedText = EncyrptionUtil.decrypt(dFilePath, keyG);
                         if (!decryptedText.isEmpty()) {
-                            System.out.println("Decrypted text:" + decryptedText);
+                            BufferedWriter dwriter = new BufferedWriter(new FileWriter(dFileTarget));
+                            dwriter.write(decryptedText);
+                            dwriter.close();//writing to file code adapted from https://www.baeldung.com/java-write-to-file.
+                            System.out.println("Decrypted text can be found at: " +dFileTarget );
                         } else {
                             System.out.println("Decryption failed.");
                         }
