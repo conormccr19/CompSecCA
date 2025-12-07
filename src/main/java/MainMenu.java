@@ -8,6 +8,7 @@ public class MainMenu {
         System.out.println("Options:");
         Scanner input = new Scanner(System.in);
         String encryptedText;
+        int key;
         boolean isRunning = true;
 
         while (isRunning) {
@@ -45,6 +46,8 @@ public class MainMenu {
                 writer.close();//writing to file code adapted from https://www.baeldung.com/java-write-to-file, particularly BufferedWriter object & import.
 
                 System.out.println(encryptedText);
+                System.out.println("The Encryption key is " + EncyrptionUtil.getKey());
+
                     break;
 
                 case 2:

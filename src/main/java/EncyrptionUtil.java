@@ -61,6 +61,7 @@ public class EncyrptionUtil {
 
             SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
 
+
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
@@ -89,5 +90,10 @@ public class EncyrptionUtil {
            System.out.println("Error: " + filename + " not found.");
            return "";
        }
+    }
+
+    public static String getKey()
+    {
+        return SecretKey;
     }
 }
