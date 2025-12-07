@@ -22,38 +22,36 @@ public class MainMenu {
         {
             case 1:
                 boolean eCorrect =false;
-                String eFilePath="";
-                String preCipherText = "";
+                String eFileContents="";
                 String eFileTarget = "ciphertext.txt";
+                String eFileName="";
                 while(!eCorrect)
                 {
                     System.out.println("Enter filename to encrypt or 0 to cancel:");
-                    String fileName = input.nextLine();
+                     eFileName = input.nextLine();
 
-                    if(fileName.equals("0"))
+                    if(eFileName.equals("0"))
                     {
                         System.out.println("Returning to main menu.");
                         break;//exit loop
                     }
-                    eFilePath=EncyrptionUtil.findTextFile(fileName);
+                    eFileContents=EncyrptionUtil.findTextFile(eFileName);
 
-                    if(!eFilePath.isEmpty())
+                    if(!eFileContents.isEmpty())
                     {
                         eCorrect=true;
                     }
                 }
 
-                File encryptionFile = new File(eFilePath);
-                preCipherText=eFilePath;
-                System.out.println("PlainText: "+ preCipherText);
-                encryptedText = EncyrptionUtil.encrypt(preCipherText);
+                System.out.println("PlainText: "+ eFileContents);
+                encryptedText = EncyrptionUtil.encrypt(eFileContents);
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter(eFileTarget));
                 writer.write(encryptedText);
                 writer.close();//writing to file code adapted from https://www.baeldung.com/java-write-to-file.
 
-                System.out.println(encryptedText);
-                System.out.println("The Encryption key is " + EncyrptionUtil.getKey());
+                System.out.println("The cipher text can be found in: " + eFileTarget);
+                System.out.println("The Encryption key is: " + EncyrptionUtil.getKey());
 
                     break;
 

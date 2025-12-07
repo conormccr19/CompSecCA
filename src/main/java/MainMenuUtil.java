@@ -61,16 +61,4 @@ public class MainMenuUtil {
         }
         return null;
     }
-    public static String  dashMenu(String title)
-    {
-        String returnS ="";
-        System.out.println(title);
-        for (int i =0;i<title.length();i++)
-        {
-            returnS+="-";
-        }
-        returnS+="\n";
-        return returnS;
-    }
-
 }
